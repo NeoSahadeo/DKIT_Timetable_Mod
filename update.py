@@ -48,7 +48,7 @@ def getCourseOverview():
     response = urllib3.request('GET',
                                'https://timetables.dkit.ie/js/filter.min.js',
                                headers=headers)
-    matches = re.finditer(r'(?<=deptarray)\[\d+\] \[\d+\] \= (?P<arrayValues>.+?)(?=;)', str(response.data))
+    matches = re.finditer(r'(?<=\bdeptarray)\[\d+\] \[\d+\] \= (?P<arrayValues>.+?)(?=;)', str(response.data))
     for match in matches:
         courses.append(match.group('arrayValues'))
 
@@ -57,9 +57,10 @@ def getCourseOverview():
 
 def updateSiteCoursesOverview():
     # Sort data into a 1x2 matrix
-    # Course Name, Course Module, ID
-    data: [] = getCoursesData()
+    # Course Name, Course Module
+    data: [] = getCourseOverview()
     count = 0
+    print(data)
     matrix = [0]*math.ceil(len(data)/2)
     for element in data:
         if matrix[count] == 0:
