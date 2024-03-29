@@ -30,22 +30,47 @@
         </select>
       </div>
     </div>
-    <button type='submit'>View Timetable</button>
+    <button type='submit'>Select a Course</button>
   </form>
   <script src='static/form.js'></script>
   <script>
     const coursesOverview = {{ coursesOverview | safe }}
     const coursesData = {{ coursesData | safe }}
     const courseContainer = document.getElementById('coursesContainer')
+    const submitButton = document.querySelector('[type="submit"]')
+
     window.onload = () => {
+      checkChecked()
       coursesData.forEach(element => {
         coursesContainer.insertAdjacentHTML('beforeend', `
-          <div class='checkboxOption'>
-            <input name='id' type='checkbox' id='${element[2]}' value='${element[2]}'>
+          <div class='checkboxOption' onclick='clickme(this)'>
+            <input class='disablePointer'name='id' type='checkbox' id='${element[2]}' value='${element[2]}'>
             <label for='${element[2]}'>${element[0].toString().slice(1,-1)}</label>
           </div>
         `)
       })
+      coursesContainer.addEventListener('click', ()=> {
+        checkChecked()
+      })
+    }
+    function checkChecked()
+    {
+      const selected = document.querySelectorAll("[type='checkbox']:checked").length
+      if (selected > 0)
+      {
+        submitButton.innerText = 'View Timetable'
+        submitButton.disabled = false
+      } 
+      else 
+      {
+        submitButton.innerText = 'Select a Course'
+        submitButton.disabled = true
+      }
+    }
+
+    function clickme(element)
+    {
+      element.children[0].checked = !element.children[0].checked
     }
   </script>
 </body>
