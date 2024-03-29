@@ -1,0 +1,4 @@
+function getTimetable(form, formType)
+{
+
+}

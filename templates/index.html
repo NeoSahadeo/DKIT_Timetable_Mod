@@ -7,13 +7,46 @@
   <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-  <h1>Neo's Modded DKIT Timetable</h1>
-    {{ coursesOverview }}
   <form method='GET' action='lookup'>
-    <input type='search' placeholder='Search For Course'>
+    <div id='coursesContainer' name='coursesSelected'>
+    </div> 
+    <h1>Search Courses</h1>
+    <div id='search'>
+      <svg xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" width="25.5" xmlns="http://www.w3.org/2000/svg" style="-webkit-print-color-adjust:exact" id="screenshot-1a85003e-56f7-807b-8004-1dbb4c78ca0d" version="1.1" viewBox="-477.75 -49.75 25.5 25.5" height="25.5">
+        <g id="shape-1a85003e-56f7-807b-8004-1dbb4c78ca0d">
+        <g class="fills" id="fills-1a85003e-56f7-807b-8004-1dbb4c78ca0d">
+        <path rx="0" ry="0" style="fill:#ffffff" d="M-454.233,-24.250L-463.158,-33.175C-463.867,-32.608,-464.681,-32.160,-465.602,-31.829C-466.523,-31.499,-467.503,-31.333,-468.542,-31.333C-471.115,-31.333,-473.293,-32.225,-475.075,-34.008C-476.858,-35.791,-477.749,-37.969,-477.750,-40.542C-477.750,-43.115,-476.858,-45.293,-475.075,-47.075C-473.292,-48.858,-471.114,-49.749,-468.542,-49.750C-465.968,-49.750,-463.790,-48.858,-462.007,-47.075C-460.223,-45.292,-459.332,-43.114,-459.333,-40.542C-459.333,-39.503,-459.499,-38.523,-459.829,-37.602C-460.160,-36.681,-460.608,-35.867,-461.175,-35.158L-452.250,-26.233ZM-468.542,-34.167C-466.771,-34.167,-465.265,-34.786,-464.025,-36.025C-462.785,-37.264,-462.166,-38.770,-462.167,-40.542C-462.167,-42.313,-462.786,-43.817,-464.025,-45.057C-465.264,-46.296,-466.770,-46.916,-468.542,-46.917C-470.313,-46.917,-471.817,-46.297,-473.057,-45.057C-474.296,-43.817,-474.916,-42.312,-474.917,-40.542C-474.917,-38.771,-474.297,-37.265,-473.057,-36.025C-471.817,-34.785,-470.312,-34.166,-468.542,-34.167Z">
+        </path>
+        </g>
+        </g>
+      </svg>
+      <input type='search' placeholder='Search For Course'>
+    </div>
+    <div id="optionals">
+      <div>
+        <h2>Filters (optional)</h2>
+        <select>
+          <option>Select Department</option>
+        </select>
+      </div>
+    </div>
     <button type='submit'>View Timetable</button>
   </form>
+  <script src='static/form.js'></script>
   <script>
+    const coursesOverview = {{ coursesOverview | safe }}
+    const coursesData = {{ coursesData | safe }}
+    const courseContainer = document.getElementById('coursesContainer')
+    window.onload = () => {
+      coursesData.forEach(element => {
+        coursesContainer.insertAdjacentHTML('beforeend', `
+          <div class='checkboxOption'>
+            <input name='id' type='checkbox' id='${element[2]}' value='${element[2]}'>
+            <label for='${element[2]}'>${element[0].toString().slice(1,-1)}</label>
+          </div>
+        `)
+      })
+    }
   </script>
 </body>
 </html>

@@ -70,3 +70,14 @@ def updateSiteCoursesOverview():
             count += 1
     matrix.sort()
     return matrix
+
+
+def getButtonValues():
+    user_agent = UserAgent().random
+    headers = urllib3.HTTPHeaderDict()
+    headers.add('User-Agent', user_agent)
+    response = urllib3.request('GET',
+                               'https://timetables.dkit.ie/studentset.php',
+                               headers=headers)
+    match = re.search(r'getTimetable\(.*?\, (?P<formType>.*?)\)', str(response.data))
+    return match.group('formType')[2:-2]

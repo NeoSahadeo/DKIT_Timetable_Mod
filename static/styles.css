@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #171717;
+  background-color: #0d0d0dFF;
   color: white;
   font-family: 'Roboto';
   width: 100vw;
@@ -14,4 +14,126 @@ body {
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  transition-duration: 0.2s;
+}
+
+h1 {
+  font-style: normal;
+  font-size: 1.875em;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+  margin-bottom: 14px;
+}
+h2 {
+  font-size: 1.875em;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  max-width: 592px;
+}
+#search {
+  height: 49px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 20.25px;
+  border-radius: 36px;
+  border: 2px solid rgba(255, 255, 255, 1);
+}
+[type='search'] {
+  padding-left: 9.25px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-style: normal;
+  font-size: 1.375em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+}
+[type='search']:focus {
+  outline: none;
+}
+#optionals {
+  width: 100%;
+  margin-top: 50px;
+}
+select{
+  border-radius: 10px;
+  background-color: rgba(45, 45, 45, 1);
+  border: none;
+  font-style: normal;
+  font-size: 1.375em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+  width: 100%;
+  padding: 5px 0px 8px 19px;
+  color: white;
+  margin: 22px auto 0px auto;
+}
+label {
+  border-radius: 8px;
+  background-color: rgba(45, 45, 45, 1);
+  border: none;
+  font-style: normal;
+  font-size: 1.375em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+  width: 100%;
+  padding: 5px 0px 8px 19px;
+  color: white;
+  margin: 0px auto 0px auto;
+  pointer-events: none;
+  user-select: none;
+}
+[type='submit'] {
+  font-size: 1.2rem;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  background-color: #1f4bff;
+  border: none;
+  color: white;
+  font-weight: 700;
+  margin-top: 30px;
+}
+#coursesContainer {
+  height: 100%;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column; 
+  padding: 1em;
+  margin-bottom: 30px;
+  overflow-y: scroll;
+}
+.checkboxOption {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+}
+input[type="checkbox"] {
+  width: 2em;
+  height: 2em;
+  margin-right: 1em;
+  accent-color: #1f4bff;
 }
