@@ -20,39 +20,73 @@
         </g>
         </g>
       </svg>
-      <input type='search' placeholder='Search For Course'>
+      <input type='search' placeholder='Search For Course' onkeyup="filterCoursesContainer(this)">
     </div>
     <div id="optionals">
-      <div>
+      <div class="optionalContainer">
         <h2>Filters (optional)</h2>
-        <select>
-          <option>Select Department</option>
+        <select id="departmentContainer">
+          <option selected disabled>Select Department</option>
         </select>
+      </div>
+      <div class="optionalContainer">
+        <h2>Options (optional)</h2>
+        <div>
+          <select name='weeks' id="weeks">
+            <option value="" selected>Current Week</option>
+            <option value="{{ weeks_next }}" >Next Week</option>
+          </select>
+          {{ days | safe }}
+          {{ periods | safe }}
+        </div>
       </div>
     </div>
     <button type='submit'>Select a Course</button>
   </form>
   <script src='static/form.js'></script>
   <script>
-    const coursesOverview = {{ coursesOverview | safe }}
-    const coursesData = {{ coursesData | safe }}
+    const months = ['Jan', 'Feb', 'Mar',
+                    'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep',
+                    'Oct', 'Nov', 'Dec']
+    const coursesModules = {{ course_modules | safe }};
+    const coursesArray = {{ courses_array | safe }};
+    const weeks = {{ weeks_array | safe }}
     const courseContainer = document.getElementById('coursesContainer')
+    const departmentContainer = document.getElementById('departmentContainer')
+    const weeksContainer = document.getElementById('weeks')
     const submitButton = document.querySelector('[type="submit"]')
 
     window.onload = () => {
-      checkChecked()
-      coursesData.forEach(element => {
+      coursesArray.sort()
+      coursesModules.sort()
+      coursesArray.forEach(element => {
         coursesContainer.insertAdjacentHTML('beforeend', `
-          <div class='checkboxOption' onclick='clickme(this)'>
-            <input class='disablePointer'name='id' type='checkbox' id='${element[2]}' value='${element[2]}'>
-            <label for='${element[2]}'>${element[0].toString().slice(1,-1)}</label>
-          </div>
-        `)
+            <div class='checkboxOption' onclick='clickme(this)' id='${element[0].toString().slice(1,-1)}'>
+              <input class='disablePointer'name='id' type='checkbox' id='${element[2].slice(1,-1)}' value='${element[2].slice(1,-1)}'>
+              <label for='${element[2].slice(1,-1)}'>${element[0].toString().slice(1,-1)}</label>
+            </div>
+          `)
       })
+      coursesModules.forEach(element => {
+        departmentContainer.insertAdjacentHTML('beforeend', `
+          <option value='${element[1].slice(1,-1)}'>${element[0].slice(1,-1)}</option>
+        `) 
+      })
+
+      weeks.forEach((element, index) => {
+        const day = new Date(element)
+        weeksContainer.insertAdjacentHTML('beforeend', `
+            <option value='${index+1}'>${day.getDate()} ${months[day.getMonth()]} ${day.getFullYear()} Week(${index+1})</option>
+          `)
+      })
+
+      checkChecked()
       coursesContainer.addEventListener('click', ()=> {
         checkChecked()
       })
     }
+
     function checkChecked()
     {
       const selected = document.querySelectorAll("[type='checkbox']:checked").length
@@ -71,6 +105,42 @@
     function clickme(element)
     {
       element.children[0].checked = !element.children[0].checked
+    }
+
+    function filterCoursesContainer(element) 
+    {
+      if (element.value.length > 0)
+      {
+        for (let i=0; courseContainer.children.length > i; i++)
+        {
+          if (!coursesContainer.children[i].classList.contains('hidden'))
+          {
+            coursesContainer.children[i].classList.add('hidden')
+          }
+        }
+        results = document.querySelectorAll(`[id*=${element.value} i]`)
+        results.forEach(element => {
+          element.classList.remove('hidden')
+        })
+        if (results.length == 0) 
+        {
+          coursesContainer.style.visibility = 'hidden';
+        }
+        else
+        {
+          coursesContainer.style.visibility = 'visible';
+        }
+      }
+      else
+      {
+        for (let i=0; courseContainer.children.length > i; i++)
+        {
+          if (coursesContainer.children[i].classList.contains('hidden'))
+          {
+            coursesContainer.children[i].classList.remove('hidden')
+          }
+        }
+      }
     }
   </script>
 </body>

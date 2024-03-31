@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from update import updateSiteCoursesData, updateSiteCoursesOverview, getButtonValues
+from update import site_data, scrape_javascript
 from urllib.parse import urlparse, parse_qs, quote
 
 app = Flask(__name__)
@@ -7,37 +7,39 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-
+    site_data_dict = site_data()
+    scrape_javascript_dict = scrape_javascript()
     return render_template('index.html',
-                           coursesData=updateSiteCoursesData(),
-                           coursesOverview=updateSiteCoursesOverview())
+                           days=site_data_dict['days'],
+                           periods=site_data_dict['periods'],
+                           submit_button=site_data_dict['submit_button'],
+                           courses_array=scrape_javascript_dict['courses_array'],
+                           course_modules=scrape_javascript_dict['course_modules'],
+                           weeks_array=scrape_javascript_dict['weeks_array'],
+                           weeks_next=scrape_javascript_dict['weeks_next'],
+                           )
 
 
 @app.route('/lookup')
 def lookup():
-    # CONSTANTS
-    FORMTYPE = 'student+set'
-    HOST = 'spenterpriselive.dkit.ie:8000'
-
     # default values
+    formType = 'student+set'
+    host = 'spenterpriselive.dkit.ie:8000'
     style = 'individual'
-    weeks = ''
-    days = '1-5'
-    periods = '5-40'
 
-    ids = parse_qs(urlparse(request.url).query)
+    query = parse_qs(urlparse(request.url).query)
 
     urls = []
 
-    for id in ids.get('id'):
-        id = id[1:-1]
-        urls.append(generatePhpURL(host=HOST,
+    for id in query.get('id'):
+        urls.append(generatePhpURL(host=host,
                                    style=style,
-                                   formType=FORMTYPE,
+                                   formType=formType,
                                    id=id,
-                                   days=days,
-                                   weeks=weeks,
-                                   periods=periods))
+                                   days=query.get('days')[0],
+                                   periods=query.get('periods')[0],
+                                   weeks=query.get('weeks')[0],
+                                   ))
 
     return urls
 
