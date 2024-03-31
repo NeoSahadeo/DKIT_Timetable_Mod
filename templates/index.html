@@ -20,12 +20,12 @@
         </g>
         </g>
       </svg>
-      <input type='search' placeholder='Search For Course' onkeyup="filterCoursesContainer(this)">
+      <input type='search' placeholder='Search For Course' onkeyup="filterCoursesContainerDiv(this)">
     </div>
     <div id="optionals">
       <div class="optionalContainer">
         <h2>Filters (optional)</h2>
-        <select id="departmentContainer">
+        <select id="departmentContainer" oninput="filterCoursesContainerInput(this)" disabled>
           <option selected disabled>Select Department</option>
         </select>
       </div>
@@ -107,7 +107,8 @@
       element.children[0].checked = !element.children[0].checked
     }
 
-    function filterCoursesContainer(element) 
+    function filterCoursesContainerDiv(element) 
+    /* THE METHOD CAN BE IMPROVED */
     {
       if (element.value.length > 0)
       {
@@ -118,17 +119,23 @@
             coursesContainer.children[i].classList.add('hidden')
           }
         }
-        results = document.querySelectorAll(`[id*=${element.value} i]`)
-        results.forEach(element => {
-          element.classList.remove('hidden')
-        })
-        if (results.length == 0) 
+        try
         {
-          coursesContainer.style.visibility = 'hidden';
+          results = document.querySelectorAll(`div[id*=${element.value} i]`)
+          if (results.length == 0) 
+          {
+            coursesContainer.style.visibility = 'hidden';
+          }
+          else
+          {
+            coursesContainer.style.visibility = 'visible';
+          }
+          results.forEach(element => {
+            element.classList.remove('hidden')
+          })
         }
-        else
-        {
-          coursesContainer.style.visibility = 'visible';
+        catch (DOMException){
+          coursesContainer.style.visibility = 'hidden';
         }
       }
       else
@@ -142,6 +149,10 @@
         }
       }
     }
+
+    function filterCoursesContainerInput(element)
+    /* NEED TO FIGURE OUT WHICH COURSES BELONG WHERE */
+    {
+    } 
   </script>
 </body>
-</html>

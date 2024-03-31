@@ -30,6 +30,10 @@ def lookup():
     query = parse_qs(urlparse(request.url).query)
 
     urls = []
+    try:
+        weeks = query.get('weeks')[0]
+    except:
+        weeks = ''
 
     for id in query.get('id'):
         urls.append(generatePhpURL(host=host,
@@ -38,9 +42,8 @@ def lookup():
                                    id=id,
                                    days=query.get('days')[0],
                                    periods=query.get('periods')[0],
-                                   weeks=query.get('weeks')[0],
+                                   weeks=weeks,
                                    ))
-
     return urls
 
 
